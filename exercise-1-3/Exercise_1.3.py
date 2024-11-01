@@ -2,8 +2,8 @@ recipes_list = []
 ingredients_list = []
 
 def take_recipe():
-    a = str(input("Enter the recipe name: "))
-    b = int(input("Enter the cooking time (in minutes): "))
+    name = str(input("Enter the recipe name: "))
+    cooking_time = int(input("Enter the cooking time (in minutes): "))
     ingredient_num = int(input("Enter the number of ingredients: "))
     ingredients_list_local = []
     for i in range(0, ingredient_num):
@@ -14,7 +14,7 @@ def take_recipe():
         if ingredient not in ingredients_list:
             ingredients_list.append(ingredient)
 
-    recipe = {"name": a, "cooking_time": b, "ingredients": ingredients_list_local}
+    recipe = {"name": name, "cooking_time": cooking_time, "ingredients": ingredients_list_local}
     recipes_list.append(recipe)
 
 n = int(input("How many recipes would you like to enter?: "))
