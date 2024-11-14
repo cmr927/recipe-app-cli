@@ -1,10 +1,14 @@
+#import(s)
 import pickle
-import recipe_search
 
+#empty lists
 recipes_list = []
 all_ingredients = []
 
 def take_recipe():
+    '''
+    Taking in the recipe name, cooking time, and ingredients from the user. Calculating the difficulty of the recipe. Gathering all these attributes into a dictionary and putting them into recipes_list
+    '''
     name = str(input("Enter the recipe name: "))
     cooking_time = int(input("Enter the cooking time (in minutes): "))
     ingredient_num = int(input("Enter the number of ingredient(s): "))
@@ -23,6 +27,10 @@ def take_recipe():
     recipes_list.append(recipe)
     
 def calc_difficulty (recipe):
+    '''
+    Param: recipe is a dictionary with the keys name, cooking_time, and ingredients.
+    Calculates the difficulty level of recipe. Retuns the difficulty_level of the recipe
+    '''
     if recipe.get("cooking_time") < 10 and len(recipe.get("ingredients")) < 4:
         difficulty = "Easy"
     elif recipe.get("cooking_time") < 10 and len(recipe.get("ingredients")) >= 4:
@@ -34,12 +42,18 @@ def calc_difficulty (recipe):
     return difficulty
 
 def print_recipe(recipe):
+    '''
+    Param: recipe is a dictionary with the keys name, cooking_time, ingredients and difficulty_level.
+    Prints the recipe dictonary
+    
+    '''
     print("Recipe: " + recipe.get("name"))
     print("Cooking Time (min): " + str(recipe.get("cooking_time")))
     for ingredient in recipe.get("ingredients"):
         print(ingredient)
     print("Difficulty level: " + recipe.get("difficulty_level"))    
 
+#User inputs the file name
 try:
     file_name = str(input("Enter the file name: "))
     user_file = open(file_name, 'rb')
@@ -59,16 +73,17 @@ finally:
     all_ingredients = data.get("all_ingredients")
     print("recipe_list", recipes_list, "all_ingredients", all_ingredients)
     
+#User input
 n = int(input("How many recipes would you like to enter?: "))
 
+#Adding the recipes and ingredients to their respective lists
 for i in range(0, n):
     take_recipe()
 data["recipes_list"] = recipes_list
 data["all_ingredients"] = all_ingredients
 print(data)
 
+#Updateding the user file with the information
 user_file = open(file_name, 'wb')
 pickle.dump(data, user_file)
 user_file.close()
-
-recipe_search.display_recipe(recipes_list[0])

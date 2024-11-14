@@ -1,3 +1,4 @@
+#import(s)
 import pickle
 
 def display_recipe(recipe):
@@ -12,7 +13,7 @@ def display_recipe(recipe):
 
 def search_ingredient(data):
     '''
-    param: data is a dictionary with the keys all_ingredients
+    param: data is a dictionary with the keys all_ingredients and recipes_list
     Prints all numbered ingredients in data. User can pick a number, retrieve the corresponding ingredient, and each recipe that contains the given ingredient will be printed.
     '''
     print("All Ingredients:")
@@ -27,21 +28,19 @@ def search_ingredient(data):
     except IndexError:
         print ("Please enter a number from the ingredients list")
     else:
-        for flub in data.get("recipes_list"):
-            blub = flub.get("ingredients")
-            if ingredient_searched in blub:
-                print(flub)
-                
-search_ingredient(
-    {
-        "all_ingredients": ["pasta", "sauce"],
-        "recipes_list": [{
-            "name": "spaghetti",
-            "ingredients": ["pasta", "sauce"]
-        },
-                         {
-            "name": "butter noodles",
-            "ingredients": ["pasta", "butter"]
-        }]
-    }
-)
+        for recipe in data.get("recipes_list"):
+            ingredients = recipe.get("ingredients")
+            if ingredient_searched in ingredients:
+                print(recipe)
+
+#User input for file with recipe data. 
+file_name = str(input("Please enter the name of the your recipe file: "))
+
+try:
+    user_file = open(file_name, 'rb')
+    data = pickle.load(user_file)
+except FileNotFoundError:
+    print("File not found. Please try again.")
+    
+else:
+    search_ingredient(data)  
