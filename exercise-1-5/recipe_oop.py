@@ -1,6 +1,12 @@
 class Recipe(object):
     all_ingredients = []
     def __init__(self, name, ingredients, cooking_time):
+        '''
+        Param self: The Recipe object
+        Param name: name of the recipe
+        Param: ingredients: a list containing the ingredients for a recipe
+        Param: cooking_time: the time taken in minutes to carry out a recipe
+        '''
         self.name = name
         self.ingredients = ingredients
         self.cooking_time = cooking_time
@@ -8,11 +14,13 @@ class Recipe(object):
     
     def recipe_search(data, search_term):
         '''
-        Param data: takes in a list of Recipe objects to search from
+        Param data: a list of Recipe objects to search from
         Param search_term: the ingredient to be searched for
         '''
-        #Step 3
-        
+        for d in data:
+            if d.search_ingredient(search_term) == True:
+                d.print_recipe()    
+            
     def get_name(self):
         output = str(self.name)
         return output
@@ -37,9 +45,15 @@ class Recipe(object):
         self.cooking_time = int(input("Enter the cooking time (in minutes): "))
     
     def add_ingredients(self, *ingredients):
+        '''
+        Param self:
+        Param *ingredients: the recipe's ingredients
+        Takes variable-length arguments for the recipe's ingredients and adds them to ingredients and then calls update_all_ingredients()
+        
+        '''
         for i in ingredients:
             self.ingredients.append(i)
-        #update_all_ingredients()
+        self.update_all_ingredients()
     
     def calculate_difficulty(self):
         '''
@@ -73,10 +87,39 @@ class Recipe(object):
         
         '''
         output = "\nRecipe Name: " + self.name + \
-        "\nIngredients: " + self.ingredients + \
-        "\nCooking Time (in minutes): " + self.cooking_time + \
-        "\nDifficulty Level: " + self.difficulty
+        "\nIngredients: " + str(self.ingredients) + \
+        "\nCooking Time (in minutes): " + str(self.cooking_time) + \
+        "\nDifficulty Level: " + str(self.difficulty)
         print (output)  
 
-         
-# l = Recipe(name, ingredients, cooking_time)
+tea = Recipe("Tea", [], None)
+tea.add_ingredients("Tea Leaves", "Sugar", "Water")
+tea.cooking_time = 5
+tea.calculate_difficulty()
+tea.print_recipe()
+
+coffee = Recipe("Coffee", [], None)
+coffee.add_ingredients("Coffee Powder", "Sugar", "Water")
+coffee.cooking_time = 5
+coffee.calculate_difficulty()
+coffee.print_recipe()
+
+cake = Recipe("Cake", [], None)
+cake.add_ingredients("Sugar", "Butter", "Eggs", "Vanilla Essence", "Flour", "Baking Powder", "Milk")
+cake.cooking_time = 50
+cake.calculate_difficulty()
+cake.print_recipe()
+
+banana_smoothie = Recipe("Banana Smoothie", [], None)
+banana_smoothie.add_ingredients("Bananas", "Milk", "Peanut Butter", "Sugar", "Ice Cubes")
+banana_smoothie.cooking_time = 5
+banana_smoothie.calculate_difficulty()
+banana_smoothie.print_recipe()
+
+recipes_list = [tea, coffee, cake, banana_smoothie]
+
+print("The recipe(s) with the specific ingredient(s)")
+
+Recipe.recipe_search(recipes_list, "Bananas")
+
+print("All ingredients: " + str(Recipe.all_ingredients))
