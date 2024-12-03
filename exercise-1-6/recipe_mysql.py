@@ -40,8 +40,6 @@ def create_recipe(conn, cursor):
     
         if ingredient not in ingredients_list_local:
             ingredients_list_local.append(ingredient)
-        if ingredient not in all_ingredients:
-            all_ingredients.append(ingredient)
 
     recipe = {"name": name, "cooking_time": cooking_time, "ingredients": ingredients_list_local}
     difficulty = calc_difficulty(recipe)
@@ -75,7 +73,17 @@ def calc_difficulty (recipe):
 
 # # Definition for search_recipe()
 def search_recipe(conn, cursor):
-   results = cursor.execute("SELECT ingredients FROM Recipes")
+    cursor.execute("SELECT ingredients FROM Recipes")
+   
+    results = cursor.fetchall()
+   
+    for row in results:
+        print("Ingredients ", row[0])
+
+        for blob in row[0].split(", "):
+            if blob not in all_ingredients:
+                all_ingredients.append(blob)
+                
 
 # # Definition for update_recipe()
 # def update_recipe(conn, cursor):
@@ -111,7 +119,9 @@ def main_menu():
     
 create_recipe(conn, cursor)
 
-cursor.execute("SELECT name, ingredients, cooking_time, difficulty FROM Recipes")
+# cursor.execute("SELECT name, ingredients, cooking_time, difficulty FROM Recipes")
+
+search_recipe(conn, cursor)
 
 results = cursor.fetchall()
 
@@ -121,3 +131,6 @@ for row in results:
     print("Cooking Time: ", row[2])
     print("Difficulty:", row[3])
     print()    
+print("all_ingredients", all_ingredients)
+
+[[('cereal, milk',), ('cereal, milk',), ('pb, j, bread',), ('a, s, d, f',), ('q, w, e, r, t, y',), ('a, b, c, d, e',)]]   
