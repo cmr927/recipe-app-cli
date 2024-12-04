@@ -78,12 +78,18 @@ def search_recipe(conn, cursor):
     results = cursor.fetchall()
    
     for row in results:
-        print("Ingredients ", row[0])
+        for ingredient in row[0].split(", "):
+            if ingredient not in all_ingredients:
+                all_ingredients.append(ingredient)
+    
+    for i in range(1, 1 + len(all_ingredients)):
+        print(str(i) + (" ") + all_ingredients[i - 1])         
 
-        for blob in row[0].split(", "):
-            if blob not in all_ingredients:
-                all_ingredients.append(blob)
-                
+    search_ingredient = int(input("Enter the number of the ingredient: "))
+    sql = "SELECT * FROM Recipes WHERE ingredients LIKE '%" +  all_ingredients[search_ingredient - 1] + "%'"
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(results)
 
 # # Definition for update_recipe()
 # def update_recipe(conn, cursor):
@@ -117,20 +123,22 @@ def main_menu():
     # elif choice == '4':
     #     delete_recipe()          
     
-create_recipe(conn, cursor)
+# create_recipe(conn, cursor)
 
 # cursor.execute("SELECT name, ingredients, cooking_time, difficulty FROM Recipes")
 
 search_recipe(conn, cursor)
 
-results = cursor.fetchall()
+# results = cursor.fetchall()
 
-for row in results:
-    print("Name: ", row[0])
-    print("Ingredients: ", row[1])
-    print("Cooking Time: ", row[2])
-    print("Difficulty:", row[3])
-    print()    
-print("all_ingredients", all_ingredients)
+# for row in results:
+    # print("Name: ", row[0])
+    # print("Ingredients: ", row[1])
+    # print("Cooking Time: ", row[2])
+    # print("Difficulty:", row[3])
+    # print()    
 
-[[('cereal, milk',), ('cereal, milk',), ('pb, j, bread',), ('a, s, d, f',), ('q, w, e, r, t, y',), ('a, b, c, d, e',)]]   
+
+
+
+
