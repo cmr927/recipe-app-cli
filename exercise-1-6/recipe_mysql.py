@@ -71,7 +71,7 @@ def calc_difficulty (recipe):
         difficulty = "Hard"           
     return difficulty
 
-# # Definition for search_recipe()
+# Definition for search_recipe()
 def search_recipe(conn, cursor):
     cursor.execute("SELECT ingredients FROM Recipes")
    
@@ -85,16 +85,63 @@ def search_recipe(conn, cursor):
     for i in range(1, 1 + len(all_ingredients)):
         print(str(i) + (" ") + all_ingredients[i - 1])         
 
-    search_ingredient = int(input("Enter the number of the ingredient: "))
+    search_ingredient = int(input("Select the ingredient's number: "))
     sql = "SELECT * FROM Recipes WHERE ingredients LIKE '%" +  all_ingredients[search_ingredient - 1] + "%'"
     cursor.execute(sql)
     results = cursor.fetchall()
     print(results)
 
-# # Definition for update_recipe()
-# def update_recipe(conn, cursor):
-#     ...
-#     return value
+def update_recipe(conn, cursor):
+# Definition for update_recipe()
+    cursor.execute("SELECT * FROM Recipes")
+   
+    results = cursor.fetchall()
+    
+    for row in results:
+        #Prints all the columns in the Recipe table
+        print("ID: ", row[4])
+        print("Name: ", row[0])
+        print("Ingredients: ", row[1])
+        print("Cooking Time: ", row[2])
+        print("Difficulty:", row[3])
+        print()  
+    
+    choose_recipe = int(input("Select the number of the recipe you want to update: "))
+    sql = "SELECT * FROM Recipes WHERE id =" + str(choose_recipe)
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    print(results)
+    
+    update_recipe_column = int(input("Do you want to update the (1) Name, (2) Ingredients or (3) Cooking Time?: "))
+    if update_recipe_column == 1:
+        new_name = str(input("Enter the new name: "))
+        sql = "UPDATE Recipes SET name ='" + new_name + "' WHERE id =" + str(choose_recipe)
+        cursor.execute(sql)
+    
+    elif update_recipe_column == 2:
+        new_ingredients = str(input("Enter the new ingredient(s) Use commas to separate each ingredient: "))
+        recipe = {"name": results[0][0], "cooking_time": results[0][2], "ingredients": new_ingredients}
+        new_difficulty = calc_difficulty(recipe)
+        sql = "UPDATE Recipes SET ingredients ='" + new_ingredients + "' WHERE id =" + str(choose_recipe)
+        cursor.execute(sql)
+        
+        recipe["difficulty"] = new_difficulty
+        sql1 = "UPDATE Recipes SET difficulty ='" + new_difficulty + "' WHERE id =" + str(choose_recipe)
+        cursor.execute(sql1)
+    
+    elif update_recipe_column == 3:
+        new_cooking_time = int(input("Enter the new cooking time (in minutes): "))
+        recipe = {"name": results[0][0], "cooking_time": new_cooking_time, "ingredients": results[0][1]}
+        new_difficulty = calc_difficulty(recipe)
+        sql = "UPDATE Recipes SET cooking_time ='" + str(new_cooking_time) + "' WHERE id =" + str(choose_recipe)
+        cursor.execute(sql) 
+        
+        recipe["difficulty"] = new_difficulty
+        sql1 = "UPDATE Recipes SET difficulty ='" + new_difficulty + "' WHERE id =" + str(choose_recipe)
+        cursor.execute(sql1)      
+    conn.commit()
+    
+
 
 # # Definition for delete_recipe()
 # def delete_recipe(conn, cursor):
@@ -127,16 +174,13 @@ def main_menu():
 
 # cursor.execute("SELECT name, ingredients, cooking_time, difficulty FROM Recipes")
 
-search_recipe(conn, cursor)
+# search_recipe(conn, cursor)
+
+update_recipe(conn, cursor)
 
 # results = cursor.fetchall()
 
-# for row in results:
-    # print("Name: ", row[0])
-    # print("Ingredients: ", row[1])
-    # print("Cooking Time: ", row[2])
-    # print("Difficulty:", row[3])
-    # print()    
+   
 
 
 
