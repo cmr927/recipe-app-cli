@@ -157,7 +157,7 @@ def edit_recipe():
     
     recipe_to_edit = session.query(Recipe).filter(Recipe.id == search_id).one()
     if not recipe_to_edit:
-        print("There are no recipes")
+        print("Invalid ID number")
         return None  
     print("1" + " " + "Name: " + " " + recipe_to_edit.name)
     print("2" + " " + "Ingredients: " + " " + recipe_to_edit.ingredients)
@@ -184,5 +184,65 @@ def edit_recipe():
     new_difficulty = recipe_to_edit.calc_difficulty()
     session.query(Recipe).filter(Recipe.id == search_id).update({Recipe.difficulty: new_difficulty})
     session.commit()
-                 
-edit_recipe()
+
+def delete_recipe():
+    recipe_count = session.query(Recipe).count()
+    if recipe_count == 0:
+        print("There are no recipes")
+        return None
+    
+    results = session.query(Recipe).all()
+    
+    print(results)
+    
+    search_id = str(input("Which recipe would you like to DELETE? Type the ID number: "))
+    
+    recipe_to_delete = session.query(Recipe).filter(Recipe.id == search_id).one()
+    if not recipe_to_delete:
+        print("Invalid ID number")
+        return None  
+    print(recipe_to_delete)
+
+    delete_options = str(input("Are you sure you want to DELETE this recipe? Yes or No?: "))
+    if delete_options.upper() == "YES":
+       delete_this = session.query(Recipe).filter(Recipe.id == search_id).one()
+       session.delete(delete_this)
+       session.commit()
+    if delete_options.upper() == "NO": 
+        print("OK, the recipe will NOT be deleted")
+        return None
+    else:
+        print("Please type 'Yes' or 'No'")   
+
+# This is our loop running the main menu.
+# It continues to loop as long as the user 
+# doesn't choose to quit.
+def main_menu():
+    print("What would you like to do? Pick a choice!")
+    print("1. Create a new recipe")
+    print("2. Search for a recipe by ingredient")
+    print("3. Update an existing recipe")
+    print("4. Delete a recipe")
+    print("Type 'quit' to exit the program.")
+    choice = input("Your choice: ")
+    
+    while(choice != 'quit'):
+        if choice == '1':
+            create_recipe()
+        elif choice == '2':
+            search_by_ingredients()
+        elif choice == '3':
+            edit_recipe() 
+        elif choice == '4':
+            delete_recipe() 
+            
+        print("What would you like to do? Pick a choice!")
+        print("1. Create a new recipe")
+        print("2. Search for a recipe by ingredient")
+        print("3. Update an existing recipe")
+        print("4. Delete a recipe")
+        print("Type 'quit' to exit the program.")
+        choice = input("Your choice: ")
+ 
+main_menu()              
+
