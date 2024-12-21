@@ -88,7 +88,7 @@ def create_recipe():
             recipe_ingredients.append(ingredient)
     
     recipe_ingredients = (", ").join(recipe_ingredients)        
-    # recipe_name checking character length is => 50
+    # checking the character lengths
     if len(recipe_name) <= 50 and recipe_cooking_time.isnumeric() and len(recipe_ingredients) <= 255:
         recipe_entry = Recipe(
             name = recipe_name,
@@ -111,7 +111,78 @@ def view_all_recipes():
     for recipe in all_recipes:
         print(recipe)
 
-view_all_recipes()     
+def search_by_ingredients():
+    ingredients_count = session.query(Recipe.ingredients).count()
+    if ingredients_count == 0:
+        print("There are no ingredients")
+        return None
+   
+    results = session.query(Recipe).all()
+    
+    all_ingredients = []
+    
+    for result in results:
+        result_list = result.return_ingredients_as_list()
+        for result_list_ingredient in result_list:
+            if result_list_ingredient not in all_ingredients:
+                all_ingredients.append(result_list_ingredient)
+    
+    for i in range(1, 1 + len(all_ingredients)):
+        print(str(i) + (" ") + all_ingredients[i - 1])         
 
+    search_ingredient = str(input("Select the ingredient's number: ")).split(" ")
+    
+    conditions = []
 
+    for x in search_ingredient:
+        condition = ("%" + all_ingredients[int(x) - 1] + "%")
+        conditions.append(Recipe.ingredients.like(condition))
+    
+    search_by_ingredients_results = session.query(Recipe).filter(*conditions).all()
+    
+    for search_by_ingredients_result in search_by_ingredients_results:
+        print(search_by_ingredients_result)
+   
+def edit_recipe():
+    recipe_count = session.query(Recipe).count()
+    if recipe_count == 0:
+        print("There are no recipes")
+        return None
+    
+    results = session.query(Recipe).all()
+    
+    print(results)
+    
+    search_id = str(input("Which recipe would you like to edit? Type the ID number: "))
+    
+    recipe_to_edit = session.query(Recipe).filter(Recipe.id == search_id).one()
+    if not recipe_to_edit:
+        print("There are no recipes")
+        return None  
+    print("1" + " " + "Name: " + " " + recipe_to_edit.name)
+    print("2" + " " + "Ingredients: " + " " + recipe_to_edit.ingredients)
+    print("3" + " " + "Cooking Time: "  + " " + str(recipe_to_edit.cooking_time))
+    
+    edit_id = str(input("What part would you like to edit? Type the ID number: "))
+    if edit_id == "1":
+        user_input_name = str(input("Type the new recipe name: "))
+        session.query(Recipe).filter(Recipe.id == search_id).update({Recipe.name: user_input_name})
+    
+    elif edit_id == "2":
+        user_input_ingredients = str(input("Type ALL of the new recipe ingredients: "))
+        session.query(Recipe).filter(Recipe.id == search_id).update({Recipe.ingredients: user_input_ingredients})
 
+    
+    elif edit_id == "3":
+        user_input_cooking_time = int(input("Type the new cooking time (in minutes): "))
+        session.query(Recipe).filter(Recipe.id == search_id).update({Recipe.cooking_time: user_input_cooking_time})
+    else:
+        print("Invalid number")
+        return None   
+    
+    recipe_to_edit = session.query(Recipe).filter(Recipe.id == search_id).one()
+    new_difficulty = recipe_to_edit.calc_difficulty()
+    session.query(Recipe).filter(Recipe.id == search_id).update({Recipe.difficulty: new_difficulty})
+    session.commit()
+                 
+edit_recipe()
