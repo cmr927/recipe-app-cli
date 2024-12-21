@@ -102,6 +102,9 @@ def create_recipe():
         session.commit()
 
 def view_all_recipes():
+    '''
+    Finds all recipes
+    ''' 
     all_recipes = session.query(Recipe).all()
     
     if all_recipes == []:
@@ -112,6 +115,9 @@ def view_all_recipes():
         print(recipe)
 
 def search_by_ingredients():
+    '''
+    Finds (a) recipe(s) based on the ingredient(s)
+    '''  
     ingredients_count = session.query(Recipe.ingredients).count()
     if ingredients_count == 0:
         print("There are no ingredients")
@@ -144,6 +150,9 @@ def search_by_ingredients():
         print(search_by_ingredients_result)
    
 def edit_recipe():
+    '''
+    Edits (a) recipe(s)
+    '''
     recipe_count = session.query(Recipe).count()
     if recipe_count == 0:
         print("There are no recipes")
@@ -172,7 +181,6 @@ def edit_recipe():
         user_input_ingredients = str(input("Type ALL of the new recipe ingredients: "))
         session.query(Recipe).filter(Recipe.id == search_id).update({Recipe.ingredients: user_input_ingredients})
 
-    
     elif edit_id == "3":
         user_input_cooking_time = int(input("Type the new cooking time (in minutes): "))
         session.query(Recipe).filter(Recipe.id == search_id).update({Recipe.cooking_time: user_input_cooking_time})
@@ -186,6 +194,9 @@ def edit_recipe():
     session.commit()
 
 def delete_recipe():
+    '''
+    Deletes (a) recipe(s)
+    '''
     recipe_count = session.query(Recipe).count()
     if recipe_count == 0:
         print("There are no recipes")
@@ -220,9 +231,10 @@ def delete_recipe():
 def main_menu():
     print("What would you like to do? Pick a choice!")
     print("1. Create a new recipe")
-    print("2. Search for a recipe by ingredient")
-    print("3. Update an existing recipe")
-    print("4. Delete a recipe")
+    print("2. View all recipes")
+    print("3. Search for a recipe by ingredient")
+    print("4. Update an existing recipe")
+    print("5. Delete a recipe")
     print("Type 'quit' to exit the program.")
     choice = input("Your choice: ")
     
@@ -230,19 +242,21 @@ def main_menu():
         if choice == '1':
             create_recipe()
         elif choice == '2':
-            search_by_ingredients()
+            view_all_recipes()
         elif choice == '3':
-            edit_recipe() 
+            search_by_ingredients() 
         elif choice == '4':
-            delete_recipe() 
+            edit_recipe() 
+        elif choice == '5':
+            delete_recipe()     
             
         print("What would you like to do? Pick a choice!")
         print("1. Create a new recipe")
-        print("2. Search for a recipe by ingredient")
-        print("3. Update an existing recipe")
-        print("4. Delete a recipe")
+        print("2. View all recipes")
+        print("3. Search for a recipe by ingredient")
+        print("4. Update an existing recipe")
+        print("5. Delete a recipe")
         print("Type 'quit' to exit the program.")
         choice = input("Your choice: ")
  
 main_menu()              
-
