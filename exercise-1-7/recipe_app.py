@@ -33,7 +33,7 @@ class Recipe(Base):
         Param: self
         Shows a quick representation of the recipe
         '''
-        return "<Recipe ID: " + str(self.id) + "-" + self.name + ">"
+        return "<Recipe ID: " + str(self.id) + " " + "-" + " " + self.name + ">"
     
     def __str__(self):
         '''
@@ -50,14 +50,14 @@ class Recipe(Base):
         '''
         Param: self
         Calculates the difficulty level of recipe. Retuns the difficulty of the recipe.
-        '''
-        if self.cooking_time < 10 and len(self.ingredients) < 4:
+        '''  
+        if self.cooking_time < 10 and len(self.return_ingredients_as_list()) < 4:
             self.difficulty = "Easy"
-        elif self.cooking_time < 10 and len(self.ingredients) >= 4:
+        elif self.cooking_time < 10 and len(self.return_ingredients_as_list()) >= 4:
             self.difficulty = "Medium"
-        elif self.cooking_time >= 10 and len(self.ingredients) < 4:
+        elif self.cooking_time >= 10 and len(self.return_ingredients_as_list()) < 4:
             self.difficulty = "Intermediate"
-        elif self.cooking_time >= 10 and len(self.ingredients) >= 4:
+        elif self.cooking_time >= 10 and len(self.return_ingredients_as_list()) >= 4:
             self.difficulty = "Hard"           
         return self.difficulty
     
@@ -229,13 +229,15 @@ def delete_recipe():
 # It continues to loop as long as the user 
 # doesn't choose to quit.
 def main_menu():
+    print("Main Menu")
+    print("="*43)
     print("What would you like to do? Pick a choice!")
-    print("1. Create a new recipe")
-    print("2. View all recipes")
-    print("3. Search for a recipe by ingredient")
-    print("4. Update an existing recipe")
-    print("5. Delete a recipe")
-    print("Type 'quit' to exit the program.")
+    print("\t1. Create a new recipe")
+    print("\t2. View all recipes")
+    print("\t3. Search for a recipe by ingredient")
+    print("\t4. Update an existing recipe")
+    print("\t5. Delete a recipe")
+    print("\tType 'quit' to exit the program.")
     choice = input("Your choice: ")
     
     while(choice != 'quit'):
@@ -250,13 +252,15 @@ def main_menu():
         elif choice == '5':
             delete_recipe()     
             
+        print("Main Menu")
+        print("="*43)
         print("What would you like to do? Pick a choice!")
-        print("1. Create a new recipe")
-        print("2. View all recipes")
-        print("3. Search for a recipe by ingredient")
-        print("4. Update an existing recipe")
-        print("5. Delete a recipe")
-        print("Type 'quit' to exit the program.")
+        print("\t1. Create a new recipe")
+        print("\t2. View all recipes")
+        print("\t3. Search for a recipe by ingredient")
+        print("\t4. Update an existing recipe")
+        print("\t5. Delete a recipe")
+        print("\tType 'quit' to exit the program.")
         choice = input("Your choice: ")
  
 main_menu()              
