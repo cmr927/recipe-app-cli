@@ -10,8 +10,10 @@ from sqlalchemy.types import Integer, String
 
 from sqlalchemy.orm import sessionmaker
 
+from config import password
+
 # MUST make this secret!
-engine = create_engine("mysql://cf-python:password@localhost/task_database")
+engine = create_engine("mysql://cf-python:"+ password +"@localhost/task_database")
 
 Base = declarative_base()
 
