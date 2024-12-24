@@ -1,4 +1,4 @@
-# recipe-app-cli
+# Recipe App CLI
 
 ## Description
 This is the command line version of a Recipe app using Python. The Django web app counterpart is coming soon.
@@ -11,7 +11,8 @@ Users can create and modify recipes with ingredients, cooking time, and a diffic
 - Automatically rate each recipe by their difficulty level.
 - Display more details on each recipe if the user prompts it, such as the ingredients, cooking time, and difficulty of the recipe.
 
-## Data Structures
-The data structure for the **individual recipes** is a dictionary because each recipe contains multiple data types such as strings for the names, ints for the cooking times and lists for the ingredients. Unlike tuples and lists, dictionaries utilize key-value pairs to keep all of the data types organized.
-git 
-The data structure for **all_recipies** is a list because I am saving the keys of the individual recipe dictionaries. Lists are typically faster to load than dictionaries and they are mutable, making it easier to modify data. 
+## Technical Requirements
+- The app handles any common exceptions or errors that may pop up either during user input, database access, for example, and display user-friendly error messages.
+- The app connects to a MySQL database hosted locally on your system.
+- The app provides an easy-to-use interface, supported by simple forms of input and concise instructions that any user can follow.
+- The app works on Python 3.6+ installations.
