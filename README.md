@@ -1,7 +1,7 @@
 # Recipe App CLI
 
 ## Description
-This is the command line version of a Recipe app using Python. The Django web app counterpart is coming soon.
+This is the command line version of a Recipe app using Python. The Django web app counterpart is in progress.
 
 Users can create and modify recipes with ingredients, cooking time, and a difficulty parameter that is automatically calculated by the app. Users should also be able to search for recipes by their ingredients.
 
